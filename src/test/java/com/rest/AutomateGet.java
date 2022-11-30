@@ -1,9 +1,11 @@
 package com.rest;
 
+import io.restassured.config.LogConfig;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -191,6 +193,34 @@ public class AutomateGet {
                 .then()
                 //Devuelve el cuerpo de la respuesta si hay un error
                 .log().ifError()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void logOnlyIfValidationFails() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                //Imprimimos la request si falla la validacion de una prueba
+                .log().ifValidationFails()
+                .when()
+                .get("/workspaces")
+                .then()
+                //Imprimimos la response si falla la validacion de una prueba
+                .log().ifValidationFails()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void logOnlyIfValidationFailsWithConfig() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                //Imprime request y response si falla la validacion de una prueba
+                .config(config.logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails()))
+                .when()
+                .get("/workspaces")
+                .then()
                 .assertThat().statusCode(200);
     }
 }
