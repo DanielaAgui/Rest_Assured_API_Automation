@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AutomateGet {
 
@@ -131,5 +132,22 @@ public class AutomateGet {
                 .extract().response().path("workspaces[0].name");
         //Imprimimos la respuesta
         System.out.println(response);
+    }
+
+    @Test
+    public void hamcrestAssertOnExtractedResponse() {
+        String response = given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .when()
+                .get("/workspaces")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                .extract().response().path("workspaces[0].name");
+        System.out.println(response);
+
+        //Podemos realizar 'Assertions' con los elementos extraidos de las respuestas
+        assertThat(response, equalTo("Curso Udemy"));
     }
 }
