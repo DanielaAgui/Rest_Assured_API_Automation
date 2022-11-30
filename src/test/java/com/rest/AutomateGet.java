@@ -5,6 +5,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
@@ -218,6 +221,38 @@ public class AutomateGet {
                 .header(headers.HEADER_ACCESSKEY)
                 //Imprime request y response si falla la validacion de una prueba
                 .config(config.logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails()))
+                .when()
+                .get("/workspaces")
+                .then()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void logsBacklistHeader() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                //Agregamos el encabezado a la lista negra, pasamos su clave por parametro
+                .config(config.logConfig(LogConfig.logConfig().blacklistHeader("X-Api-Key")))
+                .log().all()
+                .when()
+                .get("/workspaces")
+                .then()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void logsBacklistHeaders() {
+        //Creamos una colección con los encabezados
+        Set<String> header = new HashSet<String>();
+        header.add("X-Api-Key");
+        header.add("Accept");
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                //Agregamos los encabezados a la lista negra, pasamos el nombre de la coleccion por parametro
+                .config(config.logConfig(LogConfig.logConfig().blacklistHeaders(header)))
+                .log().all()
                 .when()
                 .get("/workspaces")
                 .then()
