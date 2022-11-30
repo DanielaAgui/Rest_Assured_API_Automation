@@ -1,5 +1,6 @@
 package com.rest;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
@@ -79,5 +80,56 @@ public class AutomateGet {
                 .extract().response();
         //Imprimimos la respuesta como String
         System.out.println(response.asString());
+    }
+
+    @Test
+    public void extractSingleValueFromResponseWithJson() {
+        Response response = given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .when()
+                .get("/workspaces")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                .extract().response();
+        //Creamos una variable de tipo Json y pasamos la respuesta como String
+        JsonPath jsonPath = new JsonPath(response.asString());
+        //Imprimimos la variable obtenida segun la ubicacion dada
+        System.out.println(jsonPath.getString("workspaces[0].name"));
+    }
+
+    @Test
+    public void extractSingleValueFromResponseWithJsonFrom() {
+        //Creamos una variable de tipo String
+        String response = given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .when()
+                .get("/workspaces")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                //Extraemos la respuesta como String
+                .extract().response().asString();
+        //Obtenemos de la respuesta Json un String segun la ubicacion dada
+        System.out.println(JsonPath.from(response).getString("workspaces[0].name"));
+    }
+
+    @Test
+    public void extractSingleValueFromResponseWithPath() {
+        //Creamos una variable de tipo String
+        String response = given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .when()
+                .get("/workspaces")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                //Extraemos la respuesta segun la ubicacion dada
+                .extract().response().path("workspaces[0].name");
+        //Imprimimos la respuesta
+        System.out.println(response);
     }
 }
