@@ -164,4 +164,19 @@ public class AutomateGet {
                 .assertThat().statusCode(200)
                 .body("workspaces.name", contains("Curso Udemy", "Curso de Postman GeekQA", "Curso Rest Assured API"));
     }
+
+    @Test
+    public void requestResponseLogging() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                //Devuelve la solicitud (request)
+                .log().all()
+                .when()
+                .get("/workspaces")
+                .then()
+                //Devuelve la respuesta (response)
+                .log().all()
+                .assertThat().statusCode(200);
+    }
 }
