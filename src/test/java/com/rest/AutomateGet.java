@@ -8,6 +8,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 public class AutomateGet {
 
@@ -149,5 +150,18 @@ public class AutomateGet {
 
         //Podemos realizar 'Assertions' con los elementos extraidos de las respuestas
         assertThat(response, equalTo("Curso Udemy"));
+    }
+
+    @Test
+    public void validateResponseBodyHamcrestLearnings() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .when()
+                .get("/workspaces")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                .body("workspaces.name", contains("Curso Udemy", "Curso de Postman GeekQA", "Curso Rest Assured API"));
     }
 }
