@@ -179,4 +179,18 @@ public class AutomateGet {
                 .log().all()
                 .assertThat().statusCode(200);
     }
+
+    @Test
+    public void logOnlyIfError() {
+        given()
+                .baseUri("https://api.postman.com")
+                .header(headers.HEADER_ACCESSKEY)
+                .log().all()
+                .when()
+                .get("/workspaces")
+                .then()
+                //Devuelve el cuerpo de la respuesta si hay un error
+                .log().ifError()
+                .assertThat().statusCode(200);
+    }
 }
