@@ -1,6 +1,7 @@
 package com.rest;
 
 import io.restassured.config.LogConfig;
+import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -256,6 +257,37 @@ public class AutomateGet {
                 .when()
                 .get("/workspaces")
                 .then()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void multipleHeaders() {
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Podemos agregar multiples 'headers' en la solicitud, cada uno con su nombre y valor
+                .header("header", "value2")
+                .header("x-mock-match-request-headers", "header")
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void multipleHeadersObject() {
+        //Creamos un objeto 'Header' por cada uno de ellos con su nombre y valor
+        Header header = new Header("header", "value2");
+        Header matchHeader = new Header("x-mock-match-request-headers", "header");
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Los llamamos con el metodo de 'header'
+                .header(header)
+                .header(matchHeader)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
                 .assertThat().statusCode(200);
     }
 }
