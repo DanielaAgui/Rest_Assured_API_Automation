@@ -2,6 +2,7 @@ package com.rest;
 
 import io.restassured.config.LogConfig;
 import io.restassured.http.Header;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -18,7 +19,7 @@ import static org.hamcrest.Matchers.contains;
 
 public class AutomateGet {
 
-    protected Headers headers = new Headers();
+    protected ProjectHeaders projectHeaders = new ProjectHeaders();
 
     @Test
     public void validateGetStatusCode() {
@@ -28,7 +29,7 @@ public class AutomateGet {
                 .baseUri("https://api.postman.com")
                 //Encabezado de una solicitud, en este caso es la API Key
                 //Se representan con un par clave-valor
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Cuando
                 .when()
                 //Llamamos al endpoint (parte final de la URI para acceder)
@@ -45,7 +46,7 @@ public class AutomateGet {
     public void validateResponseBody() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -61,7 +62,7 @@ public class AutomateGet {
     public void validateResponseBodyCursoUdemy() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -78,7 +79,7 @@ public class AutomateGet {
         //Creamos una variable de tipo 'Response'
         Response response = given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -94,7 +95,7 @@ public class AutomateGet {
     public void extractSingleValueFromResponseWithJson() {
         Response response = given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -112,7 +113,7 @@ public class AutomateGet {
         //Creamos una variable de tipo String
         String response = given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -129,7 +130,7 @@ public class AutomateGet {
         //Creamos una variable de tipo String
         String response = given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -145,7 +146,7 @@ public class AutomateGet {
     public void hamcrestAssertOnExtractedResponse() {
         String response = given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -162,7 +163,7 @@ public class AutomateGet {
     public void validateResponseBodyHamcrestLearnings() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .when()
                 .get("/workspaces")
                 .then()
@@ -175,7 +176,7 @@ public class AutomateGet {
     public void requestResponseLogging() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Devuelve la solicitud (request)
                 .log().all()
                 .when()
@@ -190,7 +191,7 @@ public class AutomateGet {
     public void logOnlyIfError() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 .log().all()
                 .when()
                 .get("/workspaces")
@@ -204,7 +205,7 @@ public class AutomateGet {
     public void logOnlyIfValidationFails() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Imprimimos la request si falla la validacion de una prueba
                 .log().ifValidationFails()
                 .when()
@@ -219,7 +220,7 @@ public class AutomateGet {
     public void logOnlyIfValidationFailsWithConfig() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Imprime request y response si falla la validacion de una prueba
                 .config(config.logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails()))
                 .when()
@@ -232,7 +233,7 @@ public class AutomateGet {
     public void logsBacklistHeader() {
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Agregamos el encabezado a la lista negra, pasamos su clave por parametro
                 .config(config.logConfig(LogConfig.logConfig().blacklistHeader("X-Api-Key")))
                 .log().all()
@@ -248,9 +249,10 @@ public class AutomateGet {
         Set<String> header = new HashSet<String>();
         header.add("X-Api-Key");
         header.add("Accept");
+
         given()
                 .baseUri("https://api.postman.com")
-                .header(headers.HEADER_ACCESSKEY)
+                .header(projectHeaders.HEADER_ACCESSKEY)
                 //Agregamos los encabezados a la lista negra, pasamos el nombre de la coleccion por parametro
                 .config(config.logConfig(LogConfig.logConfig().blacklistHeaders(header)))
                 .log().all()
@@ -279,11 +281,32 @@ public class AutomateGet {
         //Creamos un objeto 'Header' por cada uno de ellos con su nombre y valor
         Header header = new Header("header", "value2");
         Header matchHeader = new Header("x-mock-match-request-headers", "header");
+
         given()
                 .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
-                //Los llamamos con el metodo de 'header'
+                //Llamamos cada uno con el metodo de 'header'
                 .header(header)
                 .header(matchHeader)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void multipleHeadersUsingHeaders() {
+        //Creamos un objeto 'Header' para cada 'header' a usar
+        Header header = new Header("header", "value2");
+        Header matchHeader = new Header("x-mock-match-request-headers", "header");
+
+        //Creamos un objeto 'Headers' donde agregamos los headers creados
+        Headers headers = new Headers(header, matchHeader);
+
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Llamamos la colección de headers con el metodo
+                .headers(headers)
                 .when()
                 .get("/get")
                 .then()
