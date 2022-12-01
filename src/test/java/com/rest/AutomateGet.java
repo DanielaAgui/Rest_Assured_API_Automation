@@ -7,11 +7,11 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.restassured.RestAssured.config;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -262,55 +262,4 @@ public class AutomateGet {
                 .assertThat().statusCode(200);
     }
 
-    @Test
-    public void multipleHeaders() {
-        given()
-                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
-                //Podemos agregar multiples 'headers' en la solicitud, cada uno con su nombre y valor
-                .header("header", "value2")
-                .header("x-mock-match-request-headers", "header")
-                .when()
-                .get("/get")
-                .then()
-                .log().all()
-                .assertThat().statusCode(200);
-    }
-
-    @Test
-    public void multipleHeadersObject() {
-        //Creamos un objeto 'Header' por cada uno de ellos con su nombre y valor
-        Header header = new Header("header", "value2");
-        Header matchHeader = new Header("x-mock-match-request-headers", "header");
-
-        given()
-                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
-                //Llamamos cada uno con el metodo de 'header'
-                .header(header)
-                .header(matchHeader)
-                .when()
-                .get("/get")
-                .then()
-                .log().all()
-                .assertThat().statusCode(200);
-    }
-
-    @Test
-    public void multipleHeadersUsingHeaders() {
-        //Creamos un objeto 'Header' para cada 'header' a usar
-        Header header = new Header("header", "value2");
-        Header matchHeader = new Header("x-mock-match-request-headers", "header");
-
-        //Creamos un objeto 'Headers' donde agregamos los headers creados
-        Headers headers = new Headers(header, matchHeader);
-
-        given()
-                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
-                //Llamamos la colección de headers con el metodo
-                .headers(headers)
-                .when()
-                .get("/get")
-                .then()
-                .log().all()
-                .assertThat().statusCode(200);
-    }
 }
