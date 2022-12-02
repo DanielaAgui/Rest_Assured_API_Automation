@@ -1,7 +1,10 @@
 package com.rest;
 
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.SpecificationQuerier;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -74,5 +77,16 @@ public class RequestSpecificationExample {
                 .then()
                 .log().all()
                 .assertThat().statusCode(200);
+    }
+
+    //Podemos consultar las especificaciones de la solicitud
+    @Test
+    public void querytest() {
+        //Creamos un objeto 'QueryableRequestSpecification'
+        QueryableRequestSpecification queryableRequestSpecification = SpecificationQuerier
+                .query(requestSpecification);
+        //Imprimimos los datos requeridos
+        System.out.println(queryableRequestSpecification.getBaseUri());
+        System.out.println(queryableRequestSpecification.getHeaders());
     }
 }
