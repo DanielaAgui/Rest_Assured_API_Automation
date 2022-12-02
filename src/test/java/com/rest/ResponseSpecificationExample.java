@@ -17,6 +17,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class ResponseSpecificationExample {
 
     //Creamos una variable 'ResponseSpecification'
+    //Al usar la variable por defecto, no necesitamos crear una
     ResponseSpecification responseSpecification;
     RequestSpecification requestSpecification;
     protected ProjectHeaders projectHeaders = new ProjectHeaders();
@@ -42,7 +43,8 @@ public class ResponseSpecificationExample {
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON);
 
-        responseSpecification = responseSpecBuilder.build();
+        //En las especificaciones de solicitudes o respuesta podemos usar la variable por defecto
+        RestAssured.responseSpecification = responseSpecBuilder.build();
     }
 
     @Test
