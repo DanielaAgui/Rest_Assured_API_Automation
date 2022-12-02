@@ -80,4 +80,58 @@ public class AutomateHeaders {
                 .log().all()
                 .assertThat().statusCode(200);
     }
+
+    @Test
+    public void multiValueHeaderInTheRequest() {
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Podemos agregar un header con múltiples valores
+                .header("multiValueHeader", "value1", "value2")
+                .log().all()
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void multiValueHeaderUsingHeaders() {
+        //Creamos objetos 'Header' con el mismo nombre y para cada uno de los valores
+        Header header1 = new Header("multiValueHeader", "value1");
+        Header header2 = new Header("multiValueHeader", "value2");
+
+        //Creamos un objeto 'Headers' para los objetos individuales
+        Headers headers = new Headers(header1, header2);
+
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Llamamos los headers creados con el metodo 'headers'
+                .headers(headers)
+                .log().all()
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void multiValueHeaderUsingMap() {
+        //Creamos un 'HashMap' vacio
+        HashMap<String, String> headers = new HashMap<>();
+        //Agregamos los elementos al Map
+        headers.put("header", "value1");
+        headers.put("header", "value2");
+
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                //Llamamos la coleccion de headers con el metodo 'headers'
+                .headers(headers)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
 }
