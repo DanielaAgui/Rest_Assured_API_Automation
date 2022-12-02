@@ -134,4 +134,24 @@ public class AutomateHeaders {
                 .log().all()
                 .assertThat().statusCode(200);
     }
+
+    @Test
+    public void assertResponseHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("header", "value2");
+        headers.put("x-mock-match-request-headers", "header");
+
+        given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                .headers(headers)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                //Podemos verificar la respuesta de varios o un solo header
+                //.headers("responseHeader", "resValue2")
+                .headers("responseHeader", "resValue2",
+                        "X-RateLimit-Limit", "120");
+    }
 }
