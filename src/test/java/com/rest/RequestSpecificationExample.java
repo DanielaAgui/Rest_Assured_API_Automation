@@ -1,6 +1,5 @@
 package com.rest;
 
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
@@ -15,16 +14,15 @@ public class RequestSpecificationExample {
 
     //Creamos una variable de especificaciones de requerimientos
     RequestSpecification requestSpecification;
-    RequestSpecification requestSpecificationBuilder;
     protected ProjectHeaders projectHeaders = new ProjectHeaders();
 
     //Creamos un metodo con las especificaciones
     @BeforeClass
     public void beforeClass() {
         //Se pueden establecer con 'with()' o 'given()'
-        requestSpecification = with()
+        /*requestSpecification = with()
                 .baseUri("https://api.postman.com")
-                .header(projectHeaders.HEADER_ACCESSKEY);
+                .header(projectHeaders.HEADER_ACCESSKEY);*/
     }
 
     //Otra forma de crear las especificaciones de solicitudes
@@ -36,7 +34,7 @@ public class RequestSpecificationExample {
         requestSpecBuilder.setBaseUri("https://api.postman.com");
 
         //Construimos los requerimientos con la variable creada
-        requestSpecificationBuilder  = requestSpecBuilder.build();
+        requestSpecification = requestSpecBuilder.build();
     }
 
     @Test

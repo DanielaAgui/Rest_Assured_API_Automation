@@ -1,6 +1,7 @@
 package com.rest;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -27,9 +28,21 @@ public class ResponseSpecificationExample {
                 .header(projectHeaders.HEADER_ACCESSKEY);
 
         //Creamos la respuesta con lo esperado
-        responseSpecification = RestAssured.expect()
+        /*responseSpecification = RestAssured.expect()
                 .statusCode(200)
-                .contentType(ContentType.JSON)
+                .contentType(ContentType.JSON);*/
+    }
+
+    //Otra forma de crear los requerimientos de respuesta
+    @BeforeClass
+    public void beforeClassBuilder() {
+        //Creamos un objeto 'ResponseSpecBuilder'
+        ResponseSpecBuilder responseSpecBuilder = new ResponseSpecBuilder()
+                //Añadimos los requerimientos esperados de respuesta
+                .expectStatusCode(200)
+                .expectContentType(ContentType.JSON);
+
+        responseSpecification = responseSpecBuilder.build();
     }
 
     @Test
