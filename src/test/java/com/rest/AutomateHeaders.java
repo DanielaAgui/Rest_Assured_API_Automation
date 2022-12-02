@@ -154,4 +154,54 @@ public class AutomateHeaders {
                 .headers("responseHeader", "resValue2",
                         "X-RateLimit-Limit", "120");
     }
+
+    @Test
+    public void extractResponseHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("header", "value2");
+        headers.put("x-mock-match-request-headers", "header");
+
+        //Creamos un objeto 'Headers'
+        Headers extractedHeaders = given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                .headers(headers)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                //Extraemos la respuesta de los headers
+                .extract().headers();
+
+        //Obtenemos el nombre de la respuesta del header dado y lo imprimimos
+        System.out.println("header name: " + extractedHeaders.get("responseHeader").getName());
+        //Obtenemos el valor de la respuesta del header dado y lo imprimimos
+        System.out.println("header value: " + extractedHeaders.get("responseHeader").getValue());
+    }
+
+    @Test
+    public void extractResponseHeadersWithFor() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("header", "value2");
+        headers.put("x-mock-match-request-headers", "header");
+
+        //Creamos un objeto 'Headers'
+        Headers extractedHeaders = given()
+                .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
+                .headers(headers)
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200)
+                //Extraemos la respuesta de los headers
+                .extract().headers();
+
+        //Itera sobre todos los headers obtenidos
+        for (Header header : extractedHeaders) {
+            //Imprimos el nombre y valor
+            System.out.println("Header name: " + header.getName());
+            System.out.println("Header value: " + header.getValue());
+        }
+    }
 }
