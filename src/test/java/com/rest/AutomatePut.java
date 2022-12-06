@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class AutomatePost {
+public class AutomatePut {
 
     RequestSpecification requestSpecification;
     ResponseSpecification responseSpecification;
@@ -31,27 +31,33 @@ public class AutomatePost {
     }
 
     @Test
-    public void validatePostRequest() {
-        //Creamos una variable tipo 'String' para pegar el cuerpo solicitado en el post con los nuevos datos
+    public void validatePutRequest() {
+        //Podemos pasar datos como parametros en los endpoint
+        //Creamos un string con el dato a pasar
+        String workspaceId = "1f52326a-98ad-42d9-88ee-c0c1a15414f6";
+
+        //Creamos una variable tipo 'String' para pegar el cuerpo solicitado en el post con los datos modificados
         String payload = "{\n" +
                 "    \"workspace\": {\n" +
-                "        \"name\": \"myFirstWorkspace\",\n" +
+                "        \"name\": \"myNewWorkspace\",\n" +
                 "        \"type\": \"personal\",\n" +
-                "        \"description\": \"Rest Assured created this\"\n" +
+                "        \"description\": \"This is created by Rest Assured\"\n" +
                 "    }\n" +
                 "}";
         given()
                 .spec(requestSpecification)
-                //Pasamos el body en el cuerpo de la request
                 .body(payload)
+                //Creamos un parametro de ruta con el metodo 'pathParam()'
+                //Pasamos el nombre del parametro y luego el dato del parametro
+                .pathParam("workspaceId", workspaceId)
                 .when()
-                //Usamos el metodo 'post' con el endpoint
-                //Con 'post' creamos un nuevo elemento
-                .post("/workspaces")
+                //Usamos el metodo 'put' con el endpoint
+                //Con 'put' modificamos los datos de un elemento actual
+                //Usamos el parametro de ruta creado en el endpoint entre llaves | {parametro}
+                .put("/workspaces/{workspaceId}")
                 .then()
                 .spec(responseSpecification)
                 .assertThat()
-                //Verificamos el nombre
-                .body("workspace.name", equalTo("myFirstWorkspace"));
+                .body("workspace.name", equalTo("myNewWorkspace"));
     }
 }
