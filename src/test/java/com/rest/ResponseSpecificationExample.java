@@ -43,7 +43,7 @@ public class ResponseSpecificationExample {
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON);
 
-        //En las especificaciones de solicitudes o respuesta podemos usar la variable por defecto
+        //En las especificaciones respuesta podemos usar la variable por defecto
         RestAssured.responseSpecification = responseSpecBuilder.build();
     }
 
