@@ -26,6 +26,14 @@
             <artifactId>rest-assured</artifactId>
             <version>5.3.0</version>
         </dependency>
+
+        <!-- Para deserializar objetos json en objetos java -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

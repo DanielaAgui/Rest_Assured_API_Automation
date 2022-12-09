@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -58,7 +59,7 @@ public class AutomatePost {
     }
 
     @Test
-    public void validatePostRequestWithFile() {
+    public void validatePostRequestPayloadFromFile() {
         //Creamos un archivo con el json del body
         //Creamos un objeto tipo 'File' y añadimos la ruta del archivo creado
         File file = new File("src/main/resources/CreateWorkspacePayload.json");
@@ -72,5 +73,31 @@ public class AutomatePost {
                 .spec(responseSpecification)
                 .assertThat()
                 .body("workspace.name", equalTo("myFirstWorkspace"));
+    }
+
+    @Test
+    public void validatePostRequestPayloadAsMap() {
+        //Creamos un HashMap con los datos del objeto json externo
+        HashMap<String, Object> mainObject = new HashMap<>();
+
+        //Creamos un HashMap con los datos del objeto json interno
+        HashMap<String, String> nestedObject = new HashMap<>();
+        nestedObject.put("name", "mySecondWorkspace");
+        nestedObject.put("type", "personal");
+        nestedObject.put("description", "Rest Assured created this");
+
+        //Necesitamos la librería 'Jackson' para poder convertir a objeto
+        mainObject.put("workspace", nestedObject);
+
+        given()
+                .spec(requestSpecification)
+                //Pasamos como body el HashMap principal
+                .body(mainObject)
+                .when()
+                .post("/workspaces")
+                .then()
+                .spec(responseSpecification)
+                .assertThat()
+                .body("workspace.name", equalTo("mySecondWorkspace"));
     }
 }
