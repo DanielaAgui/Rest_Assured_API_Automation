@@ -7,6 +7,8 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -52,6 +54,23 @@ public class AutomatePost {
                 .spec(responseSpecification)
                 .assertThat()
                 //Verificamos el nombre
+                .body("workspace.name", equalTo("myFirstWorkspace"));
+    }
+
+    @Test
+    public void validatePostRequestWithFile() {
+        //Creamos un archivo con el json del body
+        //Creamos un objeto tipo 'File' y añadimos la ruta del archivo creado
+        File file = new File("src/main/resources/CreateWorkspacePayload.json");
+        given()
+                .spec(requestSpecification)
+                //Enviamos en el cuerpo del requerimiento el archivo json creado
+                .body(file)
+                .when()
+                .post("/workspaces")
+                .then()
+                .spec(responseSpecification)
+                .assertThat()
                 .body("workspace.name", equalTo("myFirstWorkspace"));
     }
 }
