@@ -1,6 +1,7 @@
 package com.rest;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -10,6 +11,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.HashMap;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 

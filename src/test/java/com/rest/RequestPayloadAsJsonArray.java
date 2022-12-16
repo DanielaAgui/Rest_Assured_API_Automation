@@ -27,6 +27,12 @@ public class RequestPayloadAsJsonArray {
                 .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
                 .header(projectHeaders.HEADER_ACCESSKEY)
                 .header("x-mock-match-request-body", "true")
+                //Podemos configurar la codificación UTF-8
+                //.config(config.encoderConfig(EncoderConfig.encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+
+                //O podemos pasarlo como parametro en 'contentType()', recordar que hay que ponerlo como 'header' en Postman
+                //.contentType("application/json;charset=utf-8")
+
                 .contentType(ContentType.JSON)
                 .log().all();
 
