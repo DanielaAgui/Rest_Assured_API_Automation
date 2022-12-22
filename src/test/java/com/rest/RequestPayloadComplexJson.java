@@ -40,10 +40,10 @@ public class RequestPayloadComplexJson {
 
         /*{
             "id": "0001",
-                "type": "donut",
-                "name": "Cake",
-                "ppu": 0.55,
-                "batters":
+            "type": "donut",
+            "name": "Cake",
+            "ppu": 0.55,
+            "batters":
             {
                 "batter":
 				[
@@ -57,7 +57,7 @@ public class RequestPayloadComplexJson {
 		[
             { "id": "5001", "type": "None" },
             { "id": "5002",
-                    "type": ["test1", "test2"]
+              "type": ["test1", "test2"]
             }
 		]
         }*/
@@ -111,6 +111,80 @@ public class RequestPayloadComplexJson {
                 .body(mainHashMap)
                 .when()
                 .post("/postComplexJson")
+                .then()
+                .spec(responseSpecification)
+                .assertThat()
+                .body("msg", equalTo("Success"));
+    }
+
+    @Test
+    public void postRequestComplexJsonAssignment() {
+
+        /*{
+            "colors": [
+            {
+                "color": "black",
+                "category": "hue",
+                "type": "primary",
+                "code": {
+                    "rgba": [255,255,255,1],
+                    "hex": "#000"
+                }
+            },
+            {
+                "color": "white",
+                "category": "value",
+                "code": {
+                    "rgba": [0,0,0,1],
+                    "hex": "#FFF"
+                }
+            }
+        ]
+      }*/
+
+        List<Integer> rgbaArrayList2 = new ArrayList<>();
+        rgbaArrayList2.add(0);
+        rgbaArrayList2.add(0);
+        rgbaArrayList2.add(0);
+        rgbaArrayList2.add(1);
+
+        HashMap<String, Object> codeHashMap2 = new HashMap<>();
+        codeHashMap2.put("rgba", rgbaArrayList2);
+        codeHashMap2.put("hex", "#FFF");
+
+        HashMap<String, Object> colorsHashMap2 = new HashMap<>();
+        colorsHashMap2.put("color", "white");
+        colorsHashMap2.put("category", "value");
+        colorsHashMap2.put("code", codeHashMap2);
+
+        List<Integer> rgbaArrayList1 = new ArrayList<>();
+        rgbaArrayList1.add(255);
+        rgbaArrayList1.add(255);
+        rgbaArrayList1.add(255);
+        rgbaArrayList1.add(1);
+
+        HashMap<String, Object> codeHashMap1 = new HashMap<>();
+        codeHashMap1.put("rgba", rgbaArrayList1);
+        codeHashMap1.put("hex", "#000");
+
+        HashMap<String, Object> colorsHashMap1 = new HashMap<>();
+        colorsHashMap1.put("color", "black");
+        colorsHashMap1.put("category", "hue");
+        colorsHashMap1.put("type", "primary");
+        colorsHashMap1.put("code", codeHashMap1);
+
+        List<HashMap<String, Object>> colorsArrayList= new ArrayList<>();
+        colorsArrayList.add(colorsHashMap1);
+        colorsArrayList.add(colorsHashMap2);
+
+        HashMap<String, Object> mainHashMap = new HashMap<>();
+        mainHashMap.put("colors", colorsArrayList);
+
+        given()
+                .spec(requestSpecification)
+                .body(mainHashMap)
+                .when()
+                .post("postComplexJsonAssignment")
                 .then()
                 .spec(responseSpecification)
                 .assertThat()
