@@ -22,9 +22,9 @@ public class RequestSpecificationExample {
     @BeforeClass
     public void beforeClass() {
         //Se pueden establecer con 'with()' o 'given()'
-        /*requestSpecification = with()
+        requestSpecification = with()
                 .baseUri("https://api.postman.com")
-                .header(projectHeaders.HEADER_ACCESSKEY);*/
+                .header(projectHeaders.HEADER_ACCESSKEY);
     }
 
     //Otra forma de crear las especificaciones de solicitudes

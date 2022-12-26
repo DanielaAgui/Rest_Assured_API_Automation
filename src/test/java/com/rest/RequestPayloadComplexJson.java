@@ -24,7 +24,6 @@ public class RequestPayloadComplexJson {
     public void beforeClass() {
         requestSpecification = given()
                 .baseUri("https://0bad87cb-e6b4-4509-86d1-dbc4e36b9340.mock.pstmn.io")
-                .header(projectHeaders.HEADER_ACCESSKEY)
                 .header("x-mock-match-request-body", "true")
                 .contentType(ContentType.JSON)
                 .log().all();

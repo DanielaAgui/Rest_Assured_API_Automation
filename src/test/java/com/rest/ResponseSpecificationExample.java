@@ -29,9 +29,9 @@ public class ResponseSpecificationExample {
                 .header(projectHeaders.HEADER_ACCESSKEY);
 
         //Creamos la respuesta con lo esperado
-        /*responseSpecification = RestAssured.expect()
+        responseSpecification = RestAssured.expect()
                 .statusCode(200)
-                .contentType(ContentType.JSON);*/
+                .contentType(ContentType.JSON);
     }
 
     //Otra forma de crear los requerimientos de respuesta
