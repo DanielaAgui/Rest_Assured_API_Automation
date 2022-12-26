@@ -41,4 +41,19 @@ public class RequestParameters {
                 .log().all()
                 .assertThat().statusCode(200);
     }
+
+    @Test
+    public void multiValueQueryParameter() {
+        given()
+                .baseUri("https://postman-echo.com")
+                //Podemos enviar un parametro con multiples valores
+                .queryParam("foo1", "bar1, bar2, bar3")
+                .log().all()
+                .when()
+                .get("/get")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
+
 }
