@@ -25,7 +25,7 @@ public class DownloadFile {
 
         //Creamos un objeto para escribir el archivo descargado
         OutputStream os = new FileOutputStream(new File("ApiDemos-debug.apk"));
-        //Creamos una matriz de tipo 'byte' donde pasamos los bytes disponibles obtenidos de la lectura del archivo
+        //Creamos un array de tipo 'byte' donde pasamos los bytes disponibles obtenidos de la lectura del archivo
         byte[] bytes = new byte[is.available()];
         //Leemos el archivo de entrada
         is.read(bytes);
