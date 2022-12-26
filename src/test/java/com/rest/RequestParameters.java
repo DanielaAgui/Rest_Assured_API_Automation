@@ -56,4 +56,19 @@ public class RequestParameters {
                 .assertThat().statusCode(200);
     }
 
+    //Los parametros de ruta permiten hacen parte de la URL y permiten consultar por fragmentos
+    @Test
+    public void pathParameter() {
+        given()
+                .baseUri("https://reqres.in")
+                //Creamos un parametro de ruta con un nombre de variable y su valor
+                .pathParam("userId", "2")
+                .log().all()
+                .when()
+                //En el endpoint usamos la variable que puede ser modificada segun lo que se desea consultar
+                .get("/api/users/{userId}")
+                .then()
+                .log().all()
+                .assertThat().statusCode(200);
+    }
 }
